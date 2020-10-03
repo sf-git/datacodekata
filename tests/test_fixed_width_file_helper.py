@@ -90,7 +90,7 @@ def test_generate_fwf_file_invalid_encoding(tmp_path) -> None:
 
     spec = FWFSpec([FWFColumnSpec("a", 0, 5)], False, "windows-1252")
 
-    # then expect an excpetion
+    # then expect an exception
     with pytest.raises(UnicodeEncodeError):
         # when
         # windows-1252 unsupported character
@@ -98,10 +98,11 @@ def test_generate_fwf_file_invalid_encoding(tmp_path) -> None:
 
 
 def test_parser_fwf_file_utf_8(tmp_path) -> None:
-    # given
-    number_of_lines = 10
+    # given FWF with 2 lines and no header
+    number_of_lines = 2
     fwf_file = tmp_path / __rnd_filename(".txt")
     with open(fwf_file, "w") as f:
+        # add two lines
         f.writelines(("aaa bbbb ccccc    ddddd   eeee\n" for _ in range(number_of_lines)))
     spec = FWFSpec(
         [
@@ -114,13 +115,36 @@ def test_parser_fwf_file_utf_8(tmp_path) -> None:
         False,
         "utf-8",
     )
-    # when
+    # when pasing according to spec
     lines = list(parse_fwf_file(spec, fwf_file))
 
     # then
     assert len(lines) == number_of_lines
     assert list(lines[0]) == ["aaa", "bbbb", "ccccc", "ddddd", "eeee"]
     assert list(lines[1]) == ["aaa", "bbbb", "ccccc", "ddddd", "eeee"]
+
+
+def test_parser_fwf_file_with_header(tmp_path) -> None:
+    # given fwf file with a header
+    number_of_lines = 2
+    fwf_file = tmp_path / __rnd_filename(".txt")
+    with open(fwf_file, "w") as f:
+        # add header
+        f.write("f1  f2\n")
+        # add two lines
+        f.writelines(("aaa bbbb\n" for _ in range(number_of_lines)))
+    spec = FWFSpec(
+        [FWFColumnSpec("a", 0, 4), FWFColumnSpec("b", 4, 5)],
+        True,
+        "utf-8",
+    )
+    # when
+    lines = list(parse_fwf_file(spec, fwf_file))
+
+    # then
+    assert len(lines) == number_of_lines
+    assert list(lines[0]) == ["aaa", "bbbb"]
+    assert list(lines[1]) == ["aaa", "bbbb"]
 
 
 def test_pasrse_fwf_file_utf_16(tmp_path) -> None:

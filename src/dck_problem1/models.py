@@ -9,6 +9,8 @@ from marshmallow.decorators import validates
 
 @dataclasses.dataclass
 class FWFColumnSpec:
+    """Fixed Width File Column specification"""
+
     name: str
     offset: int
     length: int
@@ -17,6 +19,8 @@ class FWFColumnSpec:
 
 @dataclasses.dataclass
 class FWFSpec:
+    """Fixed Width File specification"""
+
     columns: List[FWFColumnSpec]
     header: bool
     encoding: str
@@ -24,6 +28,8 @@ class FWFSpec:
 
 @dataclasses.dataclass
 class CSVSpec:
+    """CSV file specification"""
+
     column_names: List[str]
     header: bool
     encoding: str

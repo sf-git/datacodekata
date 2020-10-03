@@ -22,5 +22,13 @@ def __unexpected_data_type(column_spec: FWFColumnSpec):
 
 
 def rnd_fwf_value(column_spec: FWFColumnSpec) -> str:
+    """Generates random value according to fixed width column spec
+
+    Args:
+        column_spec (FWFColumnSpec): columns spec
+
+    Returns:
+        str: random string
+    """
     rnd_generator = __RND_VALUES_GENERATOR_BY_TYPE.get(column_spec.dtype, __unexpected_data_type)
     return rnd_generator(column_spec)
