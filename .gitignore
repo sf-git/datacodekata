@@ -1,5 +1,4 @@
 *.egg-info
-.tox
 .idea
 __pycache__
 .coverage
@@ -18,3 +17,7 @@ build
 .project/
 *.iml
 .env
+.tox/*
+!.tox/dist
+.tox/dist/*
+!.tox/dist/dck_problem1-0.0.1.tar.gz
