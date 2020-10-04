@@ -18,19 +18,36 @@
 - Bonus points if you deliver a docker container (Dockerfile) that can be used to run the code (too lazy to install stuff that you might use)
 - Pay attention to encoding
 
-## Problem 2
-
-### Data processing
-
-- Generate a csv file containing first_name, last_name, address, date_of_birth
-- Process the csv file to anonymise the data
-- Columns to anonymise are first_name, last_name and address
-- You might be thinking  that is silly
-- Now make this work on 2GB csv file (should be doable on a laptop)
-- Demonstrate that the same can work on bigger dataset
-- Hint - You would need some distributed computing platform
-
 ## Choices
 
 - Any language, any platform
 - One of the above problems or both, if you feel like it.
+
+---
+### Assumptions: 
+* Hopefully there will be no docker permission issues (I tested it on Windows 10 + msys2 + Docker Desktop and Linux Mint + Docker 19) 
+* Performance optimisation is not required.
+* Logging is not required. 
+---
+###  Requirements 
+* python 3.7.9
+* tox
+
+#### Building :
+
+    ./docker_build 
+
+    uses existing artifact from .tox/dist 
+
+    tox -e py37
+    ./docker_build 
+
+    rebuilds dist package
+    
+#### Running : 
+        
+    ./docker_run_fwf.sh 
+    creates a file o.txt in the project directory based on spec.json 
+    
+    ./docker_run_csv.sh 
+    creates a file o.csv from o.txt in the project directory based on spec.json
